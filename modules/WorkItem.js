@@ -9,12 +9,16 @@ export default React.createClass({
   getInitialState: function() {
     return {api_response_data: ''};
   },
-
   getWorkItemData(id){
     var url = Constants.server + Constants.api_features + '/' + id + Constants.access_token_query;
-    ApiManager.call_rest_api(this, url);
+    ApiManager.call_rest_api(url, this.api_callback);
   },
-
+  api_callback(data, is_error){
+    if(is_error)
+      this.setState({api_response_error: data});
+    else
+      this.setState({api_response_data: data});
+  },
   componentDidMount(){
     this.getWorkItemData(this.props.params.id)
   },
