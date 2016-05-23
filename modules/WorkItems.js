@@ -1,107 +1,40 @@
 import React from 'react'
 import NavigationLink from './NavigationLink'
-
-var Feature = React.createClass({
-  getInitialState: function(){
-    return {
-      accessCode: ''
-    }
-  },
-  componentDidMount: function(){
-    this.serverRequest = $.get(this.props.source, function (result) {
-      var feature = result[0];
-      this.setState({
-        accessCode: feature,
-      });
-    }.bind(this));
-  },
-  componentWillUnmount: function() {
-    this.serverRequest.abort();
-  },
-
-  render: function() {
-    return (
-      <div>
-        {this.state.accessCode}
-
-      </div>
-    );
-  }
-
-})
-
+import ApiManager from '../utility/ApiManager'
+import Constants from '../utility/Constants'
 
 export default React.createClass({
-
-  /*createCORSRequest(method, url) {
-    var xhr = new XMLHttpRequest();
-    if ("withCredentials" in xhr) {
-      xhr.open(method, url, true);
-    } else if (typeof XDomainRequest != "undefined") {
-      xhr = new XDomainRequest();
-      xhr.open(method, url);
-    } else {
-      xhr = null;
-    }
-    return xhr;
-  },*/
-
-
-  makeAjaxCall(){
-    var url = "https://ajt.axosoft.com/api/v1/features?access_token=4a0d56ed-082b-4aa4-92e0-f5ebe809ce99";
-    $.ajax({
-      type: 'GET',
-      url: url,
-      contentType: 'text/plain',
-      xhrFields: {
-        withCredentials: true
-      },
-      headers: {
-        "Access-Control-Allow-Origin":false
-      },
-      success: function(data) {
-        alert(JSON.stringify(data));
-      },
-      error: function(error) {
-        alert(JSON.stringify(error));
-      }
-    });
-
-    /*var xhr = this.createCORSRequest('GET', url);
-    if (!xhr) {
-      alert('CORS not supported');
-      return;
-    }
-    xhr.onload = function() {
-      var text = xhr.responseText;
-      alert('Response from CORS request to ' + url + ': ' + text);
-    };
-    xhr.onerror = function(error) {
-      alert(JSON.stringify(error));
-    };
-    xhr.send();*/
+  getInitialState: function() {
+    return {apiData: ''};
   },
 
   getWorkItemList(){
-    {this.makeAjaxCall()}
     var items = [];
-    for(var i=1; i<5; i++){
-      items.push(<li><NavigationLink to={"/workitem/"+i}>WorkItem - {i}</NavigationLink></li>);
+    for(var i= 0; i<this.state.apiData.data.length; i++){
+      items.push(<li key={i}><NavigationLink to={"/workitem/"+this.state.apiData.data[i].id}>{this.state.apiData.data[i].name}</NavigationLink></li>);
     }
     return items;
   },
+  componentDidMount(){
+    var url = Constants.server + Constants.api_features + Constants.access_token_query;
+    ApiManager.call(this, url);
+  },
   render() {
+      if(this.state.apiData.data){
     return (
       <div>
-        <Feature source="https://ajt.axosoft.com/api/v1/features?access_token=4a0d56ed-082b-4aa4-92e0-f5ebe809ce99"></Feature>
-
         <div><b>Work Items</b></div>
+        <div className="workItemsDiv">
         <ul>
           {this.getWorkItemList()}
         </ul>
-
+        </div>
         {this.props.children}
       </div>
     )
+  }
+  else {
+    return(<div>Nothing Selected!</div>)
+  }
   }
 })

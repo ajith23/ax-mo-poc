@@ -7,7 +7,7 @@ export default React.createClass({
   render() {
     return(
     <div>
-      <h1>Welcome to Axosoft Mobile!</h1>
+      <h1>Axosoft Mobile!</h1>
       <ul>
         <li><IndexLink to="/" activeClassName="active">Home</IndexLink></li>
         <li><NavigationLink to="/about" >About</NavigationLink></li>
