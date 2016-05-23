@@ -1,17 +1,17 @@
 import React from 'react'
 
 module.exports = {
-  call: function(componentObject, url){
+  call_rest_api: function(componentObject, url){
    $.ajax({
      type: 'GET',
      url: url,
      contentType: 'text/plain',
      async : true,
      success: function(data) {
-       componentObject.setState({apiData: data})
+       componentObject.setState({api_response_data: data})
      }.bind(componentObject),
      error: function(error) {
-       componentObject.setState({error: error})
+       componentObject.setState({api_response_error: error})
        alert(JSON.stringify(error));
      }.bind(componentObject)
    });
