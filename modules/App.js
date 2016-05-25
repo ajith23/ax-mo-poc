@@ -12,6 +12,7 @@ export default React.createClass({
         <li><IndexLink to="/" activeClassName="active">Home</IndexLink></li>
         <li><NavigationLink to="/about" >About</NavigationLink></li>
         <li><NavigationLink to="/workitems" >Work Items</NavigationLink></li>
+        <li><NavigationLink to="/releases" >Releases</NavigationLink></li>
       </ul>
       {this.props.children}
       <div>----------------------------------------------------------</div>

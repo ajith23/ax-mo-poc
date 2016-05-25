@@ -27,7 +27,7 @@ export default React.createClass({
     ApiManager.call_rest_api(url, this.api_callback);
   },
   render() {
-      if(this.state.api_response_data.data){
+    if(this.state.api_response_data.data){
     return (
       <div>
         <div><b>Work Items</b></div>
